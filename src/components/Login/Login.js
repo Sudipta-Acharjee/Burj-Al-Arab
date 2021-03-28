@@ -25,7 +25,8 @@ const Login = () => {
                 const { displayName, email } = result.user;
                 const signInUser = { name: displayName, email }
                 setLoggedInUser(signInUser);
-                history.replace(from);
+                setAuthToken();
+
 
             }).catch((error) => {
                 var errorCode = error.code;
@@ -34,11 +35,24 @@ const Login = () => {
                 var credential = error.credential;
             });
     }
-    return (
-        <div>
-            <h1>This is Login</h1>
-            <button onClick={handleGoogleSignIn}>Google Sign In</button>
-        </div>
+
+    const setAuthToken = () => {
+        firebase.auth().currentUser.getIdToken( /* forceRefresh */ true)
+            .then(function(idToken) {
+                sessionStorage.setItem('token', idToken);
+                history.replace(from)
+            }).catch(function(error) {
+
+            });
+    }
+
+
+    return ( <
+        div >
+        <
+        h1 > This is Login < /h1> <
+        button onClick = { handleGoogleSignIn } > Google Sign In < /button> < /
+        div >
     );
 };
 
